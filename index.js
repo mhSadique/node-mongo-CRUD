@@ -43,7 +43,7 @@ async function run() {
         const users = await cursor.toArray();
         res.send(users);
     })
-    
+
     app.get('/users/:id', async (req, res) => {
         const id = req.params.id;
         const query = {_id: ObjectId(id)}
@@ -59,6 +59,22 @@ async function run() {
         if (result.deletedCount === 1) {
             res.send(JSON.stringify(result));
         }
+    })
+
+    app.put('/users/:id', async (req, res) => {
+        const id = req.params.id;
+        const user = req.body;
+        const updatedUser = {};
+        const updatedDoc = {
+            $set: {
+                name: user.name, 
+                email: user.email
+            }
+        };
+        const filter = {_id: ObjectId(id)};
+        const options = {upset: true};
+        const result = await usersCollection.updateOne(filter, updatedDoc, options);
+        res.json(result);
     })
 
 
@@ -78,80 +94,4 @@ app.get('/', (req, res) => {
 })
 
 app.listen(port);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const express = require('express');
-// const cors = require('cors');
-// const app = express();
-// app.use(cors());
-// app.use(express.json());
-// const port = 3000;
-
-// const users = [
-//     { id: 0, name: 'Kalam', email: 'kalam@gmail.com' },
-//     { id: 1, name: 'Salam', email: 'kalam@gmail.com' },
-//     { id: 2, name: 'Jobbar', email: 'kalam@gmail.com' },
-//     { id: 3, name: 'Salim', email: 'kalam@gmail.com' },
-//     { id: 4, name: 'Kolim', email: 'kalam@gmail.com' },
-// ];
-
-// app.get('/', (req, res) => {
-//     res.send('Hello World from server!');
-// })
-
-// app.get('/users', (req, res) => {
-//     const searchText = req.query.name;
-//     if (searchText) {
-//         const searchResult = users.filter(user => user.name.toLocaleLowerCase().includes(searchText));
-//         res.send(searchResult);
-//     } else {
-//         res.send(users);
-//     }
-// })
-
-// app.get('/users/:id', (req, res) => {
-//     const id = req.params.id;
-//     res.send(users[id]);
-// })
-
-// app.post('/users', (req, res) => {
-//     const newUser = req.body;
-//     newUser.id = users.length;
-//     users.push(newUser);
-//     res.send(JSON.stringify(users));
-// })
-
-// app.listen(port, () => {
-//     console.log('listening to port ', port);
-// })
 
