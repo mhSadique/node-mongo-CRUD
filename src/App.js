@@ -22,9 +22,9 @@ function App() {
             <Route path="/users/add">
               <AddUser></AddUser>
             </Route>
-            <Route path="/users/add">
+            {/* <Route path="/users/add">
               <AddUser></AddUser>
-            </Route>
+            </Route> */}
             <Route path="/users/update/:id">
               <UpdateUser></UpdateUser>
             </Route>
